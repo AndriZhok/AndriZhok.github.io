@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн-магазин книг</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#catalog">Каталог</a></li>
+                <li><a href="#cart">Кошик</a></li>
+                <li><a href="#account">Мій акаунт</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="catalog">
+            <h1>Каталог книг</h1>
+            <div class="book-grid" id="book-list"></div>
+        </section>
+        
+        <section id="cart">
+            <h1>Кошик</h1>
+            <div id="cart-items">
+                <p>Ваш кошик порожній.</p>
+            </div>
+            <p>Загальна сума: <span id="total-price">0</span> грн</p>
+            <button id="checkout" disabled>Оформити замовлення</button>
+        </section>
+        
+        <section id="account">
+            <h1>Мій акаунт</h1>
+            <p><strong>Ім'я користувача:</strong> Іван Петренко</p>
+            <h1>Історія покупок</h1>
+            <button disabled>Переглянути історію покупок</button>
+            <h1>Налаштування</h1>
+            <button disabled>Перейти в налаштування</button>
+        </section>
+    </main>
+    
+    <footer>
+        <p>Контакти: Ivan@Petrenko.com | Телефон: +38069696966</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
