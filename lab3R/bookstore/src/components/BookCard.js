@@ -1,8 +1,6 @@
 import React from "react";
 
-const BookCard = ({ book, onAdd, cart }) => {
-  const isAdded = cart[book.title];
-
+const BookCard = ({ book, onAdd, isAdded }) => {
   return (
     <div className="book-card">
       <img src={book.image} alt="обкладинка книги" />

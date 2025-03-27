@@ -123,3 +123,8 @@ button.added {
   font-size: 1.2rem;
   color: #555;
 }
+
+.book-card button.added {
+  background-color: green;
+  color: white;
+}

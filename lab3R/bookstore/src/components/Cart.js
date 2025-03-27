@@ -5,9 +5,48 @@ const Cart = () => {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("cart")) || {};
-    setCart(stored);
+    const loadCart = () => {
+      const stored = JSON.parse(localStorage.getItem("cart")) || {};
+      const now = Date.now();
+      const FIFTEEN_MIN = 15 * 60 * 1000;
+
+      const filtered = Object.fromEntries(
+        Object.entries(stored).filter(([_, item]) => {
+          return !item.timestamp || now - item.timestamp < FIFTEEN_MIN;
+        })
+      );
+
+      setCart(filtered);
+    };
+
+    loadCart(); // початково
+
+    const interval = setInterval(loadCart, 1000); // оновлювати щосекунди
+
+    window.addEventListener("focus", loadCart);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("focus", loadCart);
+    };
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const FIFTEEN_MIN = 15 * 60 * 1000;
+      const filtered = Object.fromEntries(
+        Object.entries(cart).filter(([_, item]) => {
+          return !item.timestamp || now - item.timestamp < FIFTEEN_MIN;
+        })
+      );
+      if (Object.keys(filtered).length !== Object.keys(cart).length) {
+        setCart(filtered);
+      }
+    }, 60000); // оновлювати щохвилини
+
+    return () => clearInterval(interval);
+  }, [cart]);
 
   useEffect(() => {
     const sum = Object.values(cart).reduce(
@@ -24,6 +63,7 @@ const Cart = () => {
       delete updated[title];
     } else {
       updated[title].quantity = quantity;
+      updated[title].timestamp = Date.now();
     }
     setCart(updated);
     localStorage.setItem("cart", JSON.stringify(updated));
@@ -38,6 +78,23 @@ const Cart = () => {
     setCart({});
     localStorage.removeItem("cart");
   };
+
+  useEffect(() => {
+    const syncCartAcrossTabs = (e) => {
+      if (e.key === "cart") {
+        const updatedCart = JSON.parse(e.newValue) || {};
+        setCart(updatedCart);
+      }
+    };
+
+    window.addEventListener("storage", syncCartAcrossTabs);
+
+    return () => {
+      window.removeEventListener("storage", syncCartAcrossTabs);
+    };
+  }, []);
+
+  console.log("Поточний кошик:", cart);
 
   return (
     <div>
